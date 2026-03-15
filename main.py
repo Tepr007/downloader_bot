@@ -33,10 +33,11 @@ def loading_animation(chat_id, message_id, stop_event):
 @bot.message_handler(commands=["start"])
 def start(message):
     start_text = f"""Отправьте ссылку на видео чтобы скачать 
-    Бот поддерживает не только YouTube, VK и TikTok 
-    Поддерживамых сайтов гигантское множество 
-    Чтобы проверить, поддерживает ли бот скачивание с того или иного сайта, пришлите ссылку на видео
-    Бот работает на библиотеке yt-dlp и его код можно найти на GitHub <a href="{DATA["GitHub"]}">по ссылке</a>"""
+Бот поддерживает не только YouTube, VK и TikTok 
+Поддерживамых сайтов гигантское множество 
+Чтобы проверить, поддерживает ли бот скачивание с того или иного сайта, пришлите ссылку на видео
+Бот работает на библиотеке yt-dlp и его код можно найти на GitHub <a href="{DATA["GitHub"]}">по ссылке</a>
+Автор: @tepr007"""
     bot.send_message(message.chat.id, start_text, reply_markup=None, parse_mode="HTML")
 
 @bot.message_handler()
