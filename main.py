@@ -13,6 +13,9 @@ FFMPEG_PARENT_PATH = ".ffmpeg/bin"
 COOKIES_PATH = "cookies.txt"
 bot = telebot.TeleBot(DATA["TOKEN"])
 
+print('='*40)
+print(f"{'Video Downloader':^40}")
+print('='*40)
 
 
 def loading_animation(chat_id, message_id, stop_event):
