@@ -1,5 +1,3 @@
-call .venv\Scripts\activate.bat
-
-python main.py
-
+@echo off
+.venv\Scripts\python.exe main.py
 pause
