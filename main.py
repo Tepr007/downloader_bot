@@ -18,10 +18,10 @@ print(f"{'Video Downloader':^40}")
 print('='*40)
 
 
-def loading_animation(chat_id, message_id, stop_event):
+def loading_animation(chat_id, message_id, stop_event, title):
     dots = 1
     while not stop_event.is_set():
-        text = "Скачиваю" + "." * dots
+        text = f"Скачиваю {title}" + "." * dots
         try:
             bot.edit_message_text(
                 text,
@@ -61,14 +61,27 @@ def Enter(message):
             },
         ],
     }
-    print("Скачиваю...")
-    download_msg = bot.send_message(message.chat.id, "Скачиваю.", reply_markup=None)
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        try:
+            info = ydl.extract_info(message, download=False)
+
+            if info["filesize"] > 50 * 1024 * 1024:
+                bot.send_message(message.chat.id, "Видео слишком большое")
+                return
+        except Exception as e:
+            print(e)
+            error_text = "Не получилось скачать видео"
+            bot.send_message(message.chat.id, error_text, reply_markup=None)
+            return
+
+    print(f"Скачиваю {info["title"]}...")
+    download_msg = bot.send_message(message.chat.id, f"Скачиваю {info["title"]}.", reply_markup=None)
 
     stop_event = threading.Event()
 
     thread = threading.Thread(
         target=loading_animation,
-        args=(download_msg.chat.id, download_msg.message_id, stop_event)
+        args=(download_msg.chat.id, download_msg.message_id, stop_event, info["title"])
     )
     thread.start()
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
