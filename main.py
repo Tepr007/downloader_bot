@@ -82,3 +82,11 @@ def Enter(message):
             stop_event.set()
             thread.join()
             bot.delete_message(download_msg.chat.id, download_msg.message_id)
+
+
+def main():
+    bot.infinity_polling()
+
+
+if __name__ == "__main__":
+    main()
