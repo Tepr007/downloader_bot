@@ -74,14 +74,14 @@ def Enter(message):
             bot.send_message(message.chat.id, error_text, reply_markup=None)
             return
 
-    print(f"Скачиваю {info["title"]}...")
-    download_msg = bot.send_message(message.chat.id, f"Скачиваю {info["title"]}.", reply_markup=None)
+    print(f"Скачиваю {info['title']}...")
+    download_msg = bot.send_message(message.chat.id, f"Скачиваю {info['title']}.", reply_markup=None)
 
     stop_event = threading.Event()
 
     thread = threading.Thread(
         target=loading_animation,
-        args=(download_msg.chat.id, download_msg.message_id, stop_event, info["title"])
+        args=(download_msg.chat.id, download_msg.message_id, stop_event, info['title'])
     )
     thread.start()
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
