@@ -65,7 +65,7 @@ def Enter(message):
 
     thread = threading.Thread(
         target=loading_animation,
-        args=(bot, download_msg.chat.id, download_msg.message_id, stop_event)
+        args=(download_msg.chat.id, download_msg.message_id, stop_event)
     )
     thread.start()
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -75,14 +75,22 @@ def Enter(message):
             with open(filepath, "rb") as f:
                 bot.send_video(message.chat.id, f)
             os.remove(filepath)
-        except Exception as e:
-            print(e)
-            error_text = "Не получилось скачать видео"
-            bot.send_message(message.chat.id, error_text, reply_markup=None)
-        finally:
+            answer = "Видео скачено"
+            bot.edit_message_text(answer,
+                chat_id=download_msg.chat.id,
+                message_id=download_msg.message_id
+            )
             stop_event.set()
             thread.join()
-            bot.delete_message(download_msg.chat.id, download_msg.message_id)
+        except Exception as e:
+            print(e)
+            stop_event.set()
+            thread.join()
+            error_text = "Не получилось скачать видео"
+            bot.edit_message_text(error_text,
+                chat_id=download_msg.chat.id,
+                message_id=download_msg.message_id
+            )
 
 
 def main():
