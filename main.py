@@ -5,6 +5,8 @@ import yt_dlp
 import time
 import threading
 
+import update_parsers
+
 with open("DATA.json") as f:
     DATA = json.load(f)
 
@@ -17,6 +19,8 @@ print('='*40)
 print(f"{'Video Downloader':^40}")
 print('='*40)
 
+update_parser = threading.Timer(3600, update_parsers.main)
+update_parser.start()
 
 def loading_animation(chat_id, message_id, stop_event, title):
     dots = 1
@@ -63,11 +67,11 @@ def Enter(message):
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         try:
-            info = ydl.extract_info(message, download=False)
+            info = ydl.extract_info(message.text, download=False)
 
-            if info["filesize"] > 50 * 1024 * 1024:
-                bot.send_message(message.chat.id, "Видео слишком большое")
-                return
+            # if info["filesize"] > 50 * 1024 * 1024:
+            #     bot.send_message(message.chat.id, "Видео слишком большое")
+            #     return
         except Exception as e:
             print(e)
             error_text = "Не получилось скачать видео"
