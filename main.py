@@ -89,6 +89,7 @@ def Enter(message):
     )
     thread.start()
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        filepath = None
         try:
             info = ydl.extract_info(message.text, download=True)
             filepath = ydl.prepare_filename(info)
@@ -103,6 +104,8 @@ def Enter(message):
             stop_event.set()
             thread.join()
         except Exception as e:
+            if filepath != None and os.path.exists(filepath):
+                os.remove(filepath)
             print(e)
             stop_event.set()
             thread.join()
